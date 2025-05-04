@@ -1,7 +1,13 @@
-FROM eclipse-temurin:21-jre-alpine
+FROM ubuntu:latest AS build
 
-WORKDIR /app
+RUN apt-get update
+RUN apt-get install openjdk-17-jdk -y
+COPY . .
 
-COPY target/chatbot-0.0.1-SNAPSHOT.jar chatbot.jar
+RUN apt-get install maven -y
+RUN mvn clean install
+
+FROM openjdk:17-jdk-slim
 
 EXPOSE 8080
+COPY --from=build /app/target/chatbot-0.0.1-SNAPSHOT.jar chatbot.jar

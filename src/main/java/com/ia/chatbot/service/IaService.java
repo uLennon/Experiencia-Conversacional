@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
 
 @Service
 public class IaService {
@@ -22,6 +24,12 @@ public class IaService {
                         ChatMessageV2.assistant(AssistantMessage.builder().content(AssistantMessageContent.of("Furia"+"CS")).build())))
                         .build());
 
-        return response.getMessage().getContent().flatMap(first->first.getFirst().getText().map(TextContent::getText)).orElse("Erro na resposta");
+
+        return response.getMessage()
+                .getContent()
+                .flatMap(list -> list.isEmpty() ? Optional.empty() :
+                        list.get(0).getText().map(TextContent::getText))
+                .orElse("Erro na resposta");
+
     }
 }
