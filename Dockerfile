@@ -10,4 +10,4 @@ RUN mvn clean install -DskipTests
 FROM openjdk:17-jdk-slim
 
 EXPOSE 8080
-COPY --from=build /app/target/chatbot-0.0.1-SNAPSHOT.jar chatbot.jar
+COPY --from=build /target/chatbot-0.0.1-SNAPSHOT.jar chatbot.jar
